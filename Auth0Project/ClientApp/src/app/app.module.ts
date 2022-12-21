@@ -9,6 +9,7 @@ import { NavMenuComponent } from './nav-menu/nav-menu.component';
 import { HomeComponent } from './home/home.component';
 import { CounterComponent } from './counter/counter.component';
 import { FetchDataComponent } from './fetch-data/fetch-data.component';
+import { AuthModule } from '@auth0/auth0-angular';
 
 @NgModule({
   declarations: [
@@ -26,7 +27,11 @@ import { FetchDataComponent } from './fetch-data/fetch-data.component';
       { path: '', component: HomeComponent, pathMatch: 'full' },
       { path: 'counter', component: CounterComponent },
       { path: 'fetch-data', component: FetchDataComponent },
-    ])
+    ]),
+    AuthModule.forRoot({
+      domain: 'dev-uai25tdjqul077vl.us.auth0.com',
+      clientId: 'KQwi4Jbm9CnAbqR7rA7ffhMq4ADFcqIi',
+    }),
   ],
   providers: [],
   bootstrap: [AppComponent]
