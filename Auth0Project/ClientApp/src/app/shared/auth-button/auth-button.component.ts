@@ -14,4 +14,12 @@ export class AuthButtonComponent implements OnInit {
   ngOnInit() {
   }
 
+  onClickLogin(): void {
+    this.auth.loginWithRedirect();
+  }
+
+  onClickLogout(): void {
+    this.auth.logout({ returnTo: document.location.origin });
+  }
+
 }
