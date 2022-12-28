@@ -1,3 +1,5 @@
+import { UserProfile } from './../models/user-profile';
+import { UserService } from '../services/user.service';
 import { Component, OnInit } from '@angular/core';
 
 @Component({
@@ -6,10 +8,12 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./user-profile.component.css']
 })
 export class UserProfileComponent implements OnInit {
+  public userProfile = {} as UserProfile;
 
-  constructor() { }
+  constructor(public userService: UserService) { }
 
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
+    this.userProfile = await this.userService.getUserProfile();
   }
 
 }
