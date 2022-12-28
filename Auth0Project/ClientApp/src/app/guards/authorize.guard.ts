@@ -1,27 +1,26 @@
 import { Injectable } from "@angular/core";
 import { ActivatedRouteSnapshot, CanActivate, RouterStateSnapshot, UrlTree } from "@angular/router";
 import { AuthService } from "@auth0/auth0-angular";
-import { Observable } from "rxjs";
+import { firstValueFrom } from "rxjs";
 
 @Injectable({
     providedIn: 'root'
 })
 export class AuthorizeGuard implements CanActivate {
-    private isLoggedIn = false;
-
-    constructor(public auth: AuthService) {
-        this.auth.isAuthenticated$.subscribe(authenticated => {
-            this.isLoggedIn = authenticated;
-        });
-    }
+    constructor(public auth: AuthService) { }
 
     async canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<boolean> {
-        if (this.isLoggedIn) {
-            console.log('Authorized!');
+        const isLoggedIn = await firstValueFrom(this.auth.isAuthenticated$);
+
+        if (isLoggedIn) {
             return true;
         }
 
-        this.auth.loginWithRedirect();
+        this.auth.loginWithRedirect({
+            appState: {
+                target: state.url
+            }
+        });
 
         return false;
     }
