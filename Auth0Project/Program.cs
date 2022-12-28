@@ -1,4 +1,7 @@
 using Auth0Project.RefitClients;
+using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using Refit;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -15,6 +18,14 @@ builder.Services.AddTransient<IAuth0Api>(x =>
 
 builder.Services.AddTransient<IAuth0RefitClient, Auth0RefitClient>();
 
+builder.Services.AddControllers(opts => opts.Filters.Add(new ResponseCacheAttribute { NoStore = true, Location = ResponseCacheLocation.None }))
+                .AddNewtonsoftJson(opts =>
+                {
+                    opts.SerializerSettings.Converters.Add(new StringEnumConverter());
+                    opts.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;
+                    opts.SerializerSettings.DateTimeZoneHandling = DateTimeZoneHandling.Utc;
+                });
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -27,7 +38,6 @@ if (!app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
-
 
 app.MapControllerRoute(
     name: "default",

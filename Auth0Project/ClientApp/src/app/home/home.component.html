@@ -7,6 +7,9 @@
     client-side code</li>
   <li><a href='http://getbootstrap.com/'>Bootstrap</a> for layout and styling</li>
 </ul>
+<div>
+  <app-login></app-login>
+</div>
 <div *ngIf="isLoggedIn() | async">
   <a [routerLink]="['/user-profile']" routerLinkActive="router-link-active">User Profile</a>
 </div>
