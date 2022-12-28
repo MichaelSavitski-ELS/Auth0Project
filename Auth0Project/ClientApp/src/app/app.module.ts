@@ -1,3 +1,4 @@
+import { AuthorizeGuard } from './guards/authorize.guard';
 import { UserProfileComponent } from './user-profile/user-profile.component';
 import { SharedModule } from './shared/shared.module';
 import { BrowserModule } from '@angular/platform-browser';
@@ -31,7 +32,7 @@ import { AuthModule } from '@auth0/auth0-angular';
       { path: '', component: HomeComponent, pathMatch: 'full' },
       { path: 'counter', component: CounterComponent },
       { path: 'fetch-data', component: FetchDataComponent },
-      { path: 'user-profile', component: UserProfileComponent }
+      { path: 'user-profile', component: UserProfileComponent, canActivate: [AuthorizeGuard] }
     ]),
     AuthModule.forRoot({
       domain: 'dev-uai25tdjqul077vl.us.auth0.com',

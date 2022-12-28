@@ -7,11 +7,22 @@ import { Observable } from "rxjs";
     providedIn: 'root'
 })
 export class AuthorizeGuard implements CanActivate {
+    private isLoggedIn = false;
 
-    constructor(public auth: AuthService) { }
+    constructor(public auth: AuthService) {
+        this.auth.isAuthenticated$.subscribe(authenticated => {
+            this.isLoggedIn = authenticated;
+        });
+    }
 
-    canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean | UrlTree | Observable<boolean | UrlTree> | Promise<boolean | UrlTree> {
-        throw new Error("Method not implemented.");
+    async canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<boolean> {
+        if (this.isLoggedIn) {
+            console.log('Authorized!');
+            return true;
+        }
 
+        this.auth.loginWithRedirect();
+
+        return false;
     }
 }
