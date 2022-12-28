@@ -4,8 +4,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Auth0Project.Controllers
 {
-    [Route("api/[controller]")]
-    public class LoginController : Controller
+    [ApiController]
+    [Route("[controller]")]
+    public class LoginController : ControllerBase
     {
         private readonly IAuth0RefitClient _auth0;
 
@@ -14,10 +15,12 @@ namespace Auth0Project.Controllers
             _auth0 = auth0;
         }
 
-        [HttpPost("login")]
-        public async Task Login([FromBody] LoginTemplate loginTemplate)
+        [HttpPost]
+        public async Task<bool> Post([FromBody] LoginTemplate loginTemplate)
         {
             await _auth0.Login(loginTemplate.UserName, loginTemplate.Password);
+
+            return true;
         }
     }
 }
